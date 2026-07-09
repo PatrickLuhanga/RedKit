@@ -1,0 +1,47 @@
+body {
+    background: #ffe6f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    overflow: hidden;
+    margin: 0;
+}
+
+.container {
+    position: relative;
+    text-align: center;
+}
+
+#growBtn {
+    padding: 15px 30px;
+    font-size: 18px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    background: #ff6699;
+    color: white;
+    margin-bottom: 20px;
+}
+
+#treeCanvas {
+    border: none;
+    display: block;
+    margin: 0 auto;
+}
+
+.message {
+    position: absolute;
+    bottom: 0;
+    font-size: 20px;
+    opacity: 0;
+    animation: floatUp 2s forwards;
+    color: #ff1a75;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-150px); opacity: 1; }
+}

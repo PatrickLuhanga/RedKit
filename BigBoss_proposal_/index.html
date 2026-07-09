@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Message</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #050505;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Responsive Container */
+        #main-container {
+            display: flex;
+            width: 95%;
+            max-width: 1200px;
+            align-items: center;
+            justify-content: space-around;
+            visibility: hidden;
+            flex-direction: row; /* Default: Side-by-side */
+        }
+
+        /* Mobile Layout Tweak */
+        @media (max-width: 768px) {
+            #main-container {
+                flex-direction: column; /* Stack vertically on phones */
+                text-align: center;
+                padding-top: 20px;
+            }
+            #message {
+                padding-right: 0 !important;
+                margin-bottom: 30px;
+            }
+            canvas {
+                width: 300px; /* Smaller tree for mobile */
+                height: 360px;
+            }
+        }
+
+        #message {
+            flex: 1;
+            padding-right: 50px;
+            z-index: 10;
+        }
+
+        .line {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1.2s ease;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .line.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .highlight { color: #ff4d6d; font-weight: bold; text-shadow: 0 0 10px rgba(255, 77, 109, 0.5); }
+
+        #start-btn {
+            position: absolute;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            background: transparent;
+            color: #ff4d6d;
+            border: 2px solid #ff4d6d;
+            border-radius: 50px;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 0 15px rgba(255, 77, 109, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <button id="start-btn">Click Me ❤️</button>
+
+    <div id="main-container">
+        <div id="message">
+            <div class="line">Hey you... ✨</div>
+            <div class="line">I wanted to show you something special. Mostly coz I'm not sure when I'd get to do this in person😅.</div>
+            <div class="line">Every moment with you feels like a highlight.</div>
+            <div class="line">You make everything a little bit brighter.</div>
+            <div class="line">So, I have a formal question...</div>
+            <br>
+            <div class="line" style="font-size: 1.8rem;">Will you be my <span class="highlight">Girlfriend?</span></div>
+        </div>
+
+        <div id="canvas-container">
+            <canvas id="canvas"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const btn = document.getElementById('start-btn');
+        const container = document.getElementById('main-container');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set internal resolution
+        canvas.width = 500;
+        canvas.height = 600;
+
+        let hearts = [];
+        let dropletY = 0;
+
+        btn.addEventListener('pointerdown', () => {
+            btn.style.display = 'none';
+            container.style.visibility = 'visible';
+            startDroplet();
+        });
+
+        function startDroplet() {
+            function drop() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "#ff4d6d";
+                ctx.beginPath();
+                ctx.arc(canvas.width / 2, dropletY, 8, 0, Math.PI * 2);
+                ctx.fill();
+
+                dropletY += 8;
+
+                if (dropletY < canvas.height - 150) {
+                    requestAnimationFrame(drop);
+                } else {
+                    growTree();
+                    showText();
+                }
+            }
+            drop();
+        }
+
+        function drawHeart(x, y, size, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.bezierCurveTo(x, y - size / 2, x - size, y - size / 2, x - size, y);
+            ctx.bezierCurveTo(x - size, y + size / 2, x, y + size, x, y + size);
+            ctx.bezierCurveTo(x, y + size, x + size, y + size / 2, x + size, y);
+            ctx.bezierCurveTo(x + size, y - size / 2, x, y - size / 2, x, y);
+            ctx.fill();
+        }
+
+        function growTree() {
+            function animate() {
+                if (hearts.length < 180) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const radius = Math.random() * 130;
+                    const hX = 16 * Math.pow(Math.sin(angle), 3);
+                    const hY = -(13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle));
+                    
+                    hearts.push({
+                        x: (canvas.width / 2) + (hX * (radius/10)),
+                        y: (canvas.height - 350) + (hY * (radius/10)),
+                        size: Math.random() * 8 + 4,
+                        color: `hsl(${Math.random() * 40 + 320}, 80%, 60%)`
+                    });
+                }
+                
+                // Draw Trunk
+                ctx.fillStyle = "#2d1b1e";
+                ctx.fillRect(canvas.width / 2 - 4, canvas.height - 150, 8, -150);
+
+                hearts.forEach(h => drawHeart(h.x, h.y, h.size, h.color));
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        function showText() {
+            const lines = document.querySelectorAll('.line');
+            lines.forEach((line, index) => {
+                setTimeout(() => {
+                    line.classList.add('visible');
+                }, index * 2200);
+            });
+        }
+    </script>
+</body>
+</html>

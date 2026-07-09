@@ -1,0 +1,279 @@
+body {
+    margin: 0;
+    background-color: #050505;
+    color: #fdfdfd;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    user-select: none;
+}
+
+#start-btn {
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    background: transparent;
+    color: #ff4d6d;
+    border: 2px solid #ff4d6d;
+    border-radius: 50px;
+    cursor: pointer;
+    z-index: 100;
+    box-shadow: 0 0 15px rgba(255, 77, 109, 0.4);
+    transition: 0.3s;
+}
+
+#start-btn:hover {
+    background: rgba(255, 77, 109, 0.1);
+}
+
+#experience-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: none;
+    cursor: pointer;
+}
+
+#text-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 45vw;
+    min-width: 300px;
+    text-align: center;
+    font-size: 1.6rem;
+    line-height: 1.8;
+    z-index: 10;
+}
+
+.word {
+    opacity: 0;
+    display: inline-block;
+    transition: opacity 0.6s ease-in-out;
+}
+
+.word.visible {
+    opacity: 1;
+}
+
+.polaroid {
+    position: absolute;
+    background: white;
+    padding: 10px 10px 40px 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+    max-width: 250px;
+    z-index: 5;
+}
+
+.polaroid img {
+    width: 100%;
+    display: block;
+}
+
+#p1 { top: 5%; left: 5%; transform: rotate(-6deg); }
+#p2 { top: 5%; right: 5%; transform: rotate(8deg); }
+#p3 { bottom: 5%; left: 5%; transform: rotate(4deg); }
+#p4 { bottom: 5%; right: 5%; transform: rotate(-5deg); }
+
+#hint {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #555;
+    letter-spacing: 2px;
+    animation: pulse 2s infinite;
+    z-index: 100;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+    100% { opacity: 0.3; }
+}
+
+#final-message {
+    position: absolute;
+    bottom: 6%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 45vw;
+    min-width: 300px;
+    text-align: center;
+    font-size: 1.5rem;
+    color: #ff4d6d;
+    line-height: 1.5;
+    z-index: 10;
+}
+
+/* --- CSS BOUQUET ANIMATION --- */
+.flower-wrapper {
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    height: 400px;
+    width: 300px;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+.flower {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: scale(0);
+    transform-origin: bottom center;
+}
+
+.flower-center { position: relative; z-index: 3; }
+.flower-left { position: absolute; bottom: 0; left: 10px; z-index: 1; }
+.flower-right { position: absolute; bottom: 0; right: 10px; z-index: 2; }
+
+.stem {
+    width: 6px;
+    height: 250px;
+    background: linear-gradient(to top, #0f3b21, #2eb868);
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 0 15px rgba(46, 184, 104, 0.4);
+}
+
+.leaf {
+    position: absolute;
+    width: 40px;
+    height: 15px;
+    background: linear-gradient(to right, #1b6338, #2eb868);
+    border-radius: 50px 0 50px 0;
+    box-shadow: 0 0 10px rgba(46, 184, 104, 0.3);
+    transform: scale(0);
+    transform-origin: left bottom;
+}
+
+.leaf-1 { bottom: 60px; left: 100%; transform-origin: left bottom; }
+.leaf-2 { bottom: 120px; right: 100%; border-radius: 0 50px 0 50px; transform-origin: right bottom; }
+
+.bloom {
+    position: absolute;
+    top: -20px;
+    width: 20px;
+    height: 20px;
+    background: #ffccff;
+    border-radius: 50%;
+    box-shadow: 0 0 30px #ff66b2, 0 0 50px #ff99cc;
+    transform: scale(0);
+    z-index: 5;
+}
+
+.petal {
+    position: absolute;
+    width: 30px;
+    height: 70px;
+    background: linear-gradient(to bottom, #ff99cc, #ff66b2);
+    border-radius: 50px;
+    top: -60px;
+    left: -5px;
+    transform-origin: bottom center;
+    opacity: 0;
+    box-shadow: 0 0 15px rgba(255, 102, 178, 0.5);
+}
+
+.p1 { transform: rotate(0deg); }
+.p2 { transform: rotate(45deg); }
+.p3 { transform: rotate(90deg); }
+.p4 { transform: rotate(135deg); }
+.p5 { transform: rotate(180deg); }
+.p6 { transform: rotate(225deg); }
+.p7 { transform: rotate(270deg); }
+.p8 { transform: rotate(315deg); }
+
+/* --- STAGGERED ANIMATIONS --- */
+.flower-wrapper.grow .flower-center { animation: growCenter 3s ease-in-out forwards; }
+.flower-wrapper.grow .flower-center .leaf-1 { animation: growLeafRight 1.5s ease-in-out 1.5s forwards; }
+.flower-wrapper.grow .flower-center .leaf-2 { animation: growLeafLeft 1.5s ease-in-out 1.8s forwards; }
+.flower-wrapper.grow .flower-center .bloom { animation: bloomPop 1s ease-in-out 2.5s forwards; }
+.flower-wrapper.grow .flower-center .petal { animation: showPetal 1s ease-in-out 2.8s forwards; }
+
+.flower-wrapper.grow .flower-left { animation: growLeft 3s ease-in-out 0.6s forwards; }
+.flower-wrapper.grow .flower-left .leaf-1 { animation: growLeafRight 1.5s ease-in-out 2.1s forwards; }
+.flower-wrapper.grow .flower-left .leaf-2 { animation: growLeafLeft 1.5s ease-in-out 2.4s forwards; }
+.flower-wrapper.grow .flower-left .bloom { animation: bloomPop 1s ease-in-out 3.1s forwards; }
+.flower-wrapper.grow .flower-left .petal { animation: showPetal 1s ease-in-out 3.4s forwards; }
+
+.flower-wrapper.grow .flower-right { animation: growRight 3s ease-in-out 1.2s forwards; }
+.flower-wrapper.grow .flower-right .leaf-1 { animation: growLeafRight 1.5s ease-in-out 2.7s forwards; }
+.flower-wrapper.grow .flower-right .leaf-2 { animation: growLeafLeft 1.5s ease-in-out 3.0s forwards; }
+.flower-wrapper.grow .flower-right .bloom { animation: bloomPop 1s ease-in-out 3.7s forwards; }
+.flower-wrapper.grow .flower-right .petal { animation: showPetal 1s ease-in-out 4.0s forwards; }
+
+.floating-heart {
+    position: absolute;
+    color: #ff4d6d;
+    font-size: 1.2rem;
+    opacity: 0;
+    text-shadow: 0 0 10px #ff4d6d;
+    z-index: 10;
+}
+
+.flower-wrapper.grow .floating-heart:nth-child(1) { animation: floatUp 4s ease-in infinite 3s; left: -20px; bottom: 100px; }
+.flower-wrapper.grow .floating-heart:nth-child(2) { animation: floatUp 5s ease-in infinite 3.5s; right: -30px; bottom: 150px; font-size: 0.9rem; }
+.flower-wrapper.grow .floating-heart:nth-child(3) { animation: floatUp 4.5s ease-in infinite 4s; left: 80px; bottom: 50px; font-size: 1.5rem; }
+.flower-wrapper.grow .floating-heart:nth-child(4) { animation: floatUp 5.2s ease-in infinite 4.2s; right: 80px; bottom: 80px; font-size: 1.1rem; }
+.flower-wrapper.grow .floating-heart:nth-child(5) { animation: floatUp 4.8s ease-in infinite 3.8s; left: -60px; bottom: 180px; font-size: 1.3rem; }
+
+@keyframes growCenter { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+@keyframes growLeft { 0% { transform: scale(0) rotate(-20deg); } 100% { transform: scale(0.75) rotate(-20deg); } }
+@keyframes growRight { 0% { transform: scale(0) rotate(15deg); } 100% { transform: scale(0.85) rotate(15deg); } }
+@keyframes growLeafRight { 0% { transform: scale(0) rotate(0deg); } 100% { transform: scale(1.5) rotate(30deg); } }
+@keyframes growLeafLeft { 0% { transform: scale(0) rotate(0deg); } 100% { transform: scale(1.5) rotate(-30deg); } }
+@keyframes bloomPop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+@keyframes showPetal { 0% { opacity: 0; } 100% { opacity: 0.9; } }
+@keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 0; } 20% { opacity: 0.8; } 100% { transform: translateY(-250px) scale(0.5); opacity: 0; } }
+
+/* --- MOBILE RESPONSIVENESS FIXES --- */
+@media (max-width: 768px) {
+    .polaroid {
+        max-width: 80px;
+        padding: 5px 5px 15px 5px; 
+    }
+
+    #text-container {
+        width: 90vw;
+        min-width: unset;
+        font-size: 1.05rem;
+        line-height: 1.6;
+        padding: 0;
+    }
+
+    #p1 { top: 4%; left: 4%; }
+    #p2 { top: 4%; right: 4%; }
+    #p3 { bottom: 4%; left: 4%; }
+    #p4 { bottom: 4%; right: 4%; }
+
+    .flower-wrapper {
+        transform: translateX(-50%) scale(0.5);
+        bottom: 5%;
+    }
+
+    #final-message {
+        width: 90vw;
+        min-width: unset;
+        font-size: 1.15rem;
+        bottom: auto;
+        top: 35%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 0;
+    }
+}
